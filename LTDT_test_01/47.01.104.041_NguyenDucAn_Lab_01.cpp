@@ -68,11 +68,16 @@ int getSoCanh(GRAPH& g)
             {
                 if (!KiemTraDoThiVoHuong(g))
                 {
-                    socanh += g.a[i][j];
-                    socanh += g.a[j][i];
+                    if (g.a[i][j] != 0)
+                        socanh++;
+                    if (g.a[j][i] != 0)
+                        socanh++;
                 }
                 else
-                    socanh += g.a[i][j];
+                {
+                    if (g.a[i][j] != 0)
+                        socanh++;
+                }
             }
         }
     }
@@ -142,7 +147,7 @@ int main()
 {
     GRAPH g;
     int bac_moi_dinh[MAX];
-    readGRAPH("test3.txt", g);
+    readGRAPH("test2.txt", g);
     printGRAPH(g);
     if (!KiemTraMaTranKeHopLe(g))
     {
