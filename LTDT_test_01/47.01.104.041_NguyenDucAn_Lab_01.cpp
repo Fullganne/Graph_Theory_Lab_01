@@ -67,12 +67,11 @@ int getSoCanh(GRAPH& g)
             if (j >= i)
             {
                 if (!KiemTraDoThiVoHuong(g))
-                {
-                    socanh += g.a[i][j];
-                    socanh += g.a[j][i];
-                }
+                    if (g.a[i][j] != 0 || g.a[j][i] != 0)
+                        socanh++;
                 else
-                    socanh += g.a[i][j];
+                    if (g.a[i][j] != 0)
+                        socanh++;
             }
         }
     }
