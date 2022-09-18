@@ -23,7 +23,7 @@ void readGRAPH(string fn, GRAPH& g)
             for (int j = 0; j < g.sodinh; j++) f >> g.a[i][j];
         f.close();
     }
-    else cout << "Khong mo duoc file!!!";
+    else cout << "Khong mo duoc file!!!" << endl;
 
 }
 
@@ -39,7 +39,7 @@ void printGRAPH(GRAPH g)
 
 int KiemTraMaTranKeHopLe(GRAPH& g)
 {
-    for (int i=0; i<g.sodinh; i++)
+    for (int i = 0; i < g.sodinh; i++)
         if (g.a[i][i] != 0) return 0;
     return 1;
 }
@@ -79,7 +79,7 @@ int getSoCanh(GRAPH& g)
     return socanh;
 }
 
-void getBacDinhDTVH(GRAPH g)
+void getBacDinhDT(GRAPH g)
 {
     int Bac;
     for (int i = 0; i < g.sodinh; i++)
@@ -88,7 +88,7 @@ void getBacDinhDTVH(GRAPH g)
         for (int j = 0; j < g.sodinh; j++)
             if (g.a[i][j] > 0)
                 Bac++;
-        cout << "Bac dinh " << i+1 << ": " << Bac << endl;
+        cout << "Bac dinh " << i + 1 << ": " << Bac << endl;
     }
 }
 
@@ -106,6 +106,35 @@ void getBacLonNhat(GRAPH& g, int arr[])
             max = Bac;
     }
     cout << "Bac lon nhat cua dinh: " << max << endl;
+}
+
+void getBacNhoNhat(GRAPH& g, int arr[])
+{
+    int min = MAX;
+    for (int i = 0; i < g.sodinh; i++)
+    {
+        if (arr[i] < min)
+            min = arr[i];
+    }
+    cout << "Bac nho nhat cua dinh: " << min << endl;
+}
+
+void getBacChanBacLe(GRAPH& g, int arr[])
+{
+    cout << "Cac dinh bac chan: ";
+    for (int i = 0; i < g.sodinh; i++)
+    {
+        if (arr[i] % 2 == 0)
+            cout << i + 1 << " ";
+    }
+    cout << endl;
+    cout << "Cac dinh bac le: ";
+    for (int i = 0; i < g.sodinh; i++)
+    {
+        if (arr[i] % 2 != 0)
+            cout << i + 1 << " ";
+    }
+    cout << endl;
 }
 
 void DinhCoLapDinhTreo(int arr[])
@@ -142,7 +171,10 @@ int main()
 {
     GRAPH g;
     int bac_moi_dinh[MAX];
-    readGRAPH("test3.txt", g);
+    string fn;
+    cout << "Nhap ten file(bao gom ten mo rong): ";
+    cin >> fn;
+    readGRAPH(fn, g);
     printGRAPH(g);
     if (!KiemTraMaTranKeHopLe(g))
     {
@@ -156,8 +188,10 @@ int main()
     else
         cout << "Day la do thi vo huong!" << endl;
     cout << "So canh cua do thi: " << getSoCanh(g) << endl;
-    getBacDinhDTVH(g);
-    getBacLonNhat(g,bac_moi_dinh);
+    getBacDinhDT(g);
+    getBacLonNhat(g, bac_moi_dinh);
+    getBacNhoNhat(g, bac_moi_dinh);
+    getBacChanBacLe(g, bac_moi_dinh);
     DinhCoLapDinhTreo(bac_moi_dinh);
     return 0;
 }
