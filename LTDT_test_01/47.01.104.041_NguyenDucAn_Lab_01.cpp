@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ struct GRAPH
 void readGRAPH(string fn, GRAPH& g)
 {
     ifstream f;
-    f.open(fn);
+    f.open(fn + ".txt");
     if (f.is_open())
     {
         f >> g.sodinh;
@@ -23,8 +24,8 @@ void readGRAPH(string fn, GRAPH& g)
             for (int j = 0; j < g.sodinh; j++) f >> g.a[i][j];
         f.close();
     }
-    else cout << "Khong mo duoc file!!!" << endl;
-
+    else
+        cout << "Khong mo duoc file!!!" << endl;
 }
 
 void printGRAPH(GRAPH g)
@@ -102,21 +103,29 @@ void getBacLonNhat(GRAPH& g, int arr[])
             if (g.a[i][j] > 0)         //Tính bậc của từng đỉnh
                 Bac++;
         arr[i] = Bac;
-        if (Bac > max)
-            max = Bac;
+        if (arr[i] > max)
+        {
+            max = arr[i];
+        }
     }
-    cout << "Bac lon nhat cua dinh: " << max << endl;
+    cout << "Dinh co bac lon nhat: ";
+    for (int i = 0; i < g.sodinh; i++)
+        if (arr[i] == max)
+            cout << i + 1 << " ";
+    cout << endl;
 }
 
 void getBacNhoNhat(GRAPH& g, int arr[])
 {
     int min = MAX;
+    cout << "Dinh co bac nho nhat: ";
     for (int i = 0; i < g.sodinh; i++)
-    {
         if (arr[i] < min)
             min = arr[i];
-    }
-    cout << "Bac nho nhat cua dinh: " << min << endl;
+    for (int i = 0; i < g.sodinh; i++)
+        if (arr[i] == min)
+            cout << i + 1 << " ";
+    cout << endl;
 }
 
 void getBacChanBacLe(GRAPH& g, int arr[])
@@ -137,10 +146,10 @@ void getBacChanBacLe(GRAPH& g, int arr[])
     cout << endl;
 }
 
-void DinhCoLapDinhTreo(int arr[])
+void DinhCoLapDinhTreo(GRAPH g, int arr[])
 {
     int demcl = 0, demtr = 0;
-    for (int i = 0; i < sizeof(arr); i++)
+    for (int i = 0; i < g.sodinh; i++)
     {
         if (arr[i] == 0)
             demcl++;
@@ -152,7 +161,7 @@ void DinhCoLapDinhTreo(int arr[])
     else
     {
         cout << "Cac dinh co lap: ";
-        for (int i = 0; i < sizeof(arr); i++)
+        for (int i = 0; i < g.sodinh; i++)
             if (arr[i] == 0) cout << i + 1 << " ";
         cout << endl;
     }
@@ -161,7 +170,7 @@ void DinhCoLapDinhTreo(int arr[])
     else
     {
         cout << "Cac dinh treo: ";
-        for (int i = 0; i < sizeof(arr); i++)
+        for (int i = 0; i < g.sodinh; i++)
             if (arr[i] == 1) cout << i + 1 << " ";
         cout << endl;
     }
@@ -172,17 +181,14 @@ int main()
     GRAPH g;
     int bac_moi_dinh[MAX];
     string fn;
-    cout << "Nhap ten file(bao gom ten mo rong): ";
+    cout << "Nhap ten file: ";
     cin >> fn;
     readGRAPH(fn, g);
     printGRAPH(g);
     if (!KiemTraMaTranKeHopLe(g))
-    {
-        cout << "Do thi khong hop le!" << endl;
-        return 0;
-    }
+        cout << "Ma tran ke khong hop le!" << endl;
     else
-        cout << "Do thi hop le!" << endl;
+        cout << "Ma tran ke hop le!" << endl;
     if (!KiemTraDoThiVoHuong(g))
         cout << "Day la do thi co huong!" << endl;
     else
@@ -192,6 +198,6 @@ int main()
     getBacLonNhat(g, bac_moi_dinh);
     getBacNhoNhat(g, bac_moi_dinh);
     getBacChanBacLe(g, bac_moi_dinh);
-    DinhCoLapDinhTreo(bac_moi_dinh);
+    DinhCoLapDinhTreo(g, bac_moi_dinh);
     return 0;
 }
